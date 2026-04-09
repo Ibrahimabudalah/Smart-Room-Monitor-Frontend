@@ -1,43 +1,25 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Dashboard from "./pages/Dashboard";
-import Chat from "./pages/Chat";
-import ProtectedRoute from "./components/ProtectedRoute";
-import Layout from "./components/Layout";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import Layout from "@/components/Layout";
+import Chat from "@/pages/Chat";
+import Dashboard from "@/pages/Dashboard";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Public */}
-        <Route path="/" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-
-        {/* Protected with Layout */}
-        <Route
-          path="/dashboard"
-          element={
-            // <ProtectedRoute>
-            <Layout>
-              <Dashboard />
-            </Layout>
-            // </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/chat"
-          element={
-            // <ProtectedRoute>
-            <Layout>
-              <Chat />
-            </Layout>
-            // </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <div className="theme min-h-screen">
+      <BrowserRouter>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="/dashboard" element={<Navigate replace to="/" />} />
+            <Route path="/chat" element={<Chat />} />
+          </Route>
+          <Route
+            path="*"
+            element={<Navigate replace to="/" />}
+          />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 
