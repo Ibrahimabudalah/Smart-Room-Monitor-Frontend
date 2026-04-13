@@ -2,7 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Layout from "@/components/Layout";
 import Chat from "@/pages/Chat";
 import Dashboard from "@/pages/Dashboard";
-import Login from "@/pages/login";
+import Login from "@/pages/Login";
 import { isAuthenticated } from "@/utils/auth";
 import type { ReactElement } from "react";
 

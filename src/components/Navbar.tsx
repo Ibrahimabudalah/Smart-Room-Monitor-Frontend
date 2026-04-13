@@ -12,12 +12,14 @@ import { cn } from "@/lib/utils";
 import {
   Bot,
   LayoutDashboard,
+  LogOut,
   Menu,
   MonitorSpeaker,
   Sparkles,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { logout } from "@/utils/auth";
 
 interface NavigationItem {
   href: string;
@@ -42,17 +44,20 @@ const navigationItems: NavigationItem[] = [
 ];
 
 export default function Navbar() {
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
-        <NavLink
-          className="flex min-w-0 items-center gap-3"
-          to="/"
-        >
+        <NavLink className="flex min-w-0 items-center gap-3" to="/">
           <div className="flex size-11 items-center justify-center rounded-2xl bg-slate-950 text-white shadow-sm">
             <MonitorSpeaker className="size-5" />
           </div>
-
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-foreground">
               Smart Room Monitor
@@ -67,6 +72,16 @@ export default function Navbar() {
           {navigationItems.map((item) => (
             <DesktopNavItem item={item} key={item.href} />
           ))}
+          {/* Logout button for desktop */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleLogout}
+            className="flex items-center gap-2"
+          >
+            <LogOut className="size-4" />
+            Logout
+          </Button>
         </div>
 
         <div className="ml-auto flex items-center gap-2 md:hidden">
@@ -94,6 +109,20 @@ export default function Navbar() {
                 {navigationItems.map((item) => (
                   <MobileNavItem item={item} key={item.href} />
                 ))}
+                <button
+                  onClick={logout}
+                  className="flex w-full items-start gap-3 rounded-2xl border border-border bg-background px-4 py-4 transition-colors hover:bg-muted"
+                >
+                  <div className="mt-0.5 rounded-xl bg-background/10 p-2">
+                    <LogOut className="size-4" />
+                  </div>
+                  <div className="space-y-1 text-left">
+                    <p className="font-medium">Logout</p>
+                    <p className="text-sm text-muted-foreground">
+                      Sign out of your account
+                    </p>
+                  </div>
+                </button>
               </div>
             </SheetContent>
           </Sheet>
@@ -105,7 +134,6 @@ export default function Navbar() {
 
 function DesktopNavItem({ item }: { item: NavigationItem }) {
   const Icon = item.icon;
-
   return (
     <NavLink
       className={({ isActive }) =>
@@ -126,7 +154,6 @@ function DesktopNavItem({ item }: { item: NavigationItem }) {
 
 function MobileNavItem({ item }: { item: NavigationItem }) {
   const Icon = item.icon;
-
   return (
     <SheetClose asChild>
       <NavLink
